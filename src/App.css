@@ -4,11 +4,20 @@
     background-color: gray;
 }
 
-.colo
+.color-panel {
+    padding: 5px;
+    border: 1px solid silver;
+}
 
-canvas {
-    width: 600px;
-    height: 400px;
+.color {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.canvas-wrapper {
     margin: 0 auto;
-    background-color: white;
+    border: 1px solid white;
 }

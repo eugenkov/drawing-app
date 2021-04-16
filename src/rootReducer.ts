@@ -1,5 +1,13 @@
 import { RootState } from './types';
-import { Action } from './actions';
+import {
+    Action,
+    BEGIN_STROKE,
+    UPDATE_STROKE,
+    END_STROKE,
+    SET_STROKE_COLOR,
+    UNDO,
+    REDO
+} from './actions';
 
 const initialState: RootState = {
     currentStroke: { points: [], color: '#000'},
@@ -7,13 +15,12 @@ const initialState: RootState = {
     historyIndex: 0,
 }
 
-
 export const rootReducer = (
     state: RootState = initialState,
     action: Action
 ) => {
     switch (action.type) {
-        case 'BEGIN_STROKE': {
+        case BEGIN_STROKE: {
             return {
                 ...state,
                 currentStroke: {
@@ -23,7 +30,7 @@ export const rootReducer = (
             }
         }
 
-        case 'UPDATE_STROKE': {
+        case UPDATE_STROKE: {
             return {
                 ...state,
                 currentStroke: {
@@ -33,15 +40,42 @@ export const rootReducer = (
             }
         }
 
-        case 'END_STROKE': {
+        case END_STROKE: {
             if (!state.currentStroke.points.length) {
                 return state;
             }
+
+            const historyLimit = state.strokes.length - state.historyIndex;
             return {
                 ...state,
-                currentStroke: {...state.currentStroke, points: []},
-                strokes: [...state.strokes, state.currentStroke]
+                historyIndex: 0,
+                currentStroke: { ...state.currentStroke, points: [] },
+                strokes: [ ...state.strokes.slice(0, historyLimit), state.currentStroke]
             }
+        }
+
+        case SET_STROKE_COLOR: {
+            return {
+                ...state,
+                currentStroke: {
+                    ...state.currentStroke,
+                    ...{color: action.payload}
+                }
+            }
+        }
+
+        case UNDO: {
+            const historyIndex = Math.min(
+                state.historyIndex + 1,
+                state.strokes.length
+            )
+            return { ...state, historyIndex }
+        }
+
+        case REDO: {
+            const historyIndex = Math.max(state.historyIndex - 1, 0);
+            return { ...state, historyIndex }
+
         }
         default:
             return state;

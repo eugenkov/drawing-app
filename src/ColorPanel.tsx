@@ -11,7 +11,6 @@ const COLORS = [
     '#fff200',
     '#22b14c',
     '#00a2e8',
-    '#00a2e8',
     '#3f48cc',
     '#a349a4',
     '#ffffff',
@@ -35,18 +34,16 @@ export const ColorPanel = () => {
 
     return (
         <div className='color-panel'>
-            <div className='color-panel__colors'>
-                {
-                    COLORS.map(( color: string ) => (
-                       <div
-                           key={color}
-                           onClick={() => { onColorChange(color) }}
-                           className='color'
-                           style={{ backgroundColor: color }}
-                       />
-                    ))
-                }
-            </div>
+            {
+                COLORS.map(( color: string ) => (
+                   <div
+                       key={color}
+                       onClick={() => { onColorChange(color) }}
+                       className='color'
+                       style={{ backgroundColor: color }}
+                   />
+                ))
+            }
         </div>
     )
 }
